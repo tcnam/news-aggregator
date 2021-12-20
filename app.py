@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import pymongo
   
-connection_url = 'mongodb+srv://username:password@cluster0.l8x9e.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+connection_url = 'mongodb+srv://trancongnam:G2wL8HxyMgmu4aIo@cluster0.l8x9e.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 app = Flask(__name__)
 client = pymongo.MongoClient(connection_url)
   
