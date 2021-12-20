@@ -1,7 +1,6 @@
 # This file may be used to create an environment using:
 # $ conda create --name <env> --file <this file>
 # platform: win-64
-asgiref==3.4.1==pypi_0
 beautifulsoup4==4.10.0==pyh06a4308_0
 brotlipy==0.7.0==py39h2bbff1b_1003
 bs4==4.10.0==hd3eb1b0_0
