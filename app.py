@@ -41,7 +41,7 @@ def findNewsBasedOnCategory(categoryvalue):
     catevalue=CategoryNormalize(categoryvalue)
     output = {}
     i = 0
-    for result in NewsTable.find({'category':catevalue}):
+    for result in NewsTable.find({'category':catevalue}).limit(2):
         output[i] = result
         output[i].pop('_id')
         i += 1
