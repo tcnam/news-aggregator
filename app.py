@@ -22,6 +22,9 @@ def CategoryNormalize(category):
         'giaoduc':'Giáo dục',
     }
     return switcher.get(category)
+@app.route('/')
+def helloworld():
+    return 'hello world'
 @app.route('/news/', methods=['GET'])
 def findAll():
     query = NewsTable.find()
