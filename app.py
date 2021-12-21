@@ -5,12 +5,13 @@ from bson import json_util
 from flask import Flask, request, Response
 import pymongo
 
+
+
 load_dotenv() # use dotenv to hide sensitive credential as environment variables
 connection_url=os.environ.get("url")
 client = pymongo.MongoClient(connection_url)
 # Database
 db = client.get_database('news_aggregator')
-# Table
 
 app = Flask(__name__)
 
@@ -53,5 +54,5 @@ def findNewsBasedOnCategory(categoryvalue):
     
     
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
 
