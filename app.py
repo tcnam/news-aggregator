@@ -2,14 +2,11 @@ from dotenv import load_dotenv
 import json
 import os
 from bson import json_util
-from flask import Flask, jsonify, request, Response
+from flask import Flask, request, Response
 import pymongo
 
 load_dotenv() # use dotenv to hide sensitive credential as environment variables
-connection_url=f'mongodb+srv://trancongnam:{os.environ.get("password")}'\
-	      '@cluster0.l8x9e.mongodb.net/myFirstDatabase?'\
-	      'retryWrites=true&w=majority'
-
+connection_url=os.environ.get("url")
 client = pymongo.MongoClient(connection_url)
 # Database
 db = client.get_database('news_aggregator')
@@ -35,16 +32,13 @@ def helloworld():
 @app.route('/news/', methods=['GET'])
 def findAll():
     news=[]
-    data=db.news.find()
-    for new in data:
-        new=json.dumps(new,default=json_util.default)
+    for new in db.news.find():
         news.append(new)
     return Response(
-        news,
+        json.dumps(news,default=json_util.default),
         mimetype="application/json",
-        status=200
+        status=200,
     )
-
 @app.route('/news/<categoryvalue>/',methods=['GET'])
 def findNewsBasedOnCategory(categoryvalue):
     catevalue=CategoryNormalize(categoryvalue)
@@ -54,10 +48,11 @@ def findNewsBasedOnCategory(categoryvalue):
     return Response(
         json.dumps(news,default=json_util.default),
         mimetype="application/json",
-        status=200
+        status=200,
     )
     
     
 if __name__ == '__main__':
+    port=int(os.environ.get('PORT',5000))
     app.run(debug=True)
 
