@@ -1,15 +1,22 @@
-from flask import Flask, jsonify, request
-from flask_cors import CORS
+from dotenv import load_dotenv
+import json
+import os
+from bson import json_util
+from flask import Flask, jsonify, request, Response
 import pymongo
-  
-connection_url = 'mongodb+srv://trancongnam:G2wL8HxyMgmu4aIo@cluster0.l8x9e.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
-app = Flask(__name__)
-client = pymongo.MongoClient(connection_url)
 
+load_dotenv() # use dotenv to hide sensitive credential as environment variables
+connection_url=f'mongodb+srv://trancongnam:{os.environ.get("password")}'\
+	      '@cluster0.l8x9e.mongodb.net/myFirstDatabase?'\
+	      'retryWrites=true&w=majority'
+
+client = pymongo.MongoClient(connection_url)
 # Database
-Database = client.get_database('news_aggregator')
+db = client.get_database('news_aggregator')
 # Table
-NewsTable = Database.news
+
+app = Flask(__name__)
+
 def CategoryNormalize(category):
     switcher={
         'yte':'Y tế',
@@ -27,25 +34,28 @@ def helloworld():
     return 'hello world'
 @app.route('/news/', methods=['GET'])
 def findAll():
-    query = NewsTable.find()
-    output = {}
-    i = 0
-    for x in query:
-        output[i] = x
-        output[i].pop('_id')
-        i += 1
-    return jsonify(output)
+    news=[]
+    data=db.news.find()
+    for new in data:
+        new=json.dumps(new,default=json_util.default)
+        news.append(new)
+    return Response(
+        news,
+        mimetype="application/json",
+        status=200
+    )
 
 @app.route('/news/<categoryvalue>/',methods=['GET'])
 def findNewsBasedOnCategory(categoryvalue):
     catevalue=CategoryNormalize(categoryvalue)
-    output = {}
-    i = 0
-    for result in NewsTable.find({'category':catevalue}).limit(2):
-        output[i] = result
-        output[i].pop('_id')
-        i += 1
-    return jsonify(output)
+    news=[]
+    for result in db.news.find({'category':catevalue}).limit(5):
+        news.append(result)
+    return Response(
+        json.dumps(news,default=json_util.default),
+        mimetype="application/json",
+        status=200
+    )
     
     
 if __name__ == '__main__':
