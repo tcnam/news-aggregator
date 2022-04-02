@@ -13,12 +13,11 @@ def extractMainUrls(site_url):
             site_urls.append(menu_category['href'])
     return site_urls;
 
-def getAllUrlsThanhNien():
-    csv_file=open('news.csv','w',encoding='utf-8')
+def getAllUrlsThanhNien(visited_urls):
+    csv_file=open('news.csv','a',encoding='utf-8',newline='')
     csv_writer=csv.writer(csv_file)
     csv_writer.writerow(['url','title','imageurl','category','newname','time'])
 
-    visited_urls=[]
     main_url='https://thanhnien.vn/'
     print(len(main_url.split('/')))
 
@@ -72,7 +71,7 @@ def getAllUrlsThanhNien():
 
     csv_file.close()
 
-getAllUrlsThanhNien()
+#getAllUrlsThanhNien()
 #for site_url in site_urls:
 
 

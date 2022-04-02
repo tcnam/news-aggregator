@@ -9,7 +9,7 @@ def normalizeDatetime(time_str):
     result=time_str[2]+' '+time_str[3]
     return result
 
-def getAllUrlsLaoDong():
+def getAllUrlsLaoDong(visited_urls):
     site_urls=[
         'https://laodong.vn/thoi-su/',
         'https://laodong.vn/the-gioi/',
@@ -22,11 +22,9 @@ def getAllUrlsLaoDong():
         'https://laodong.vn/giai-tri/'
     ]
 
-    csv_file=open('news.csv','a',encoding='utf-8')
+    csv_file=open('news.csv','a',encoding='utf-8',newline='')
     csv_writer=csv.writer(csv_file)
     csv_writer.writerow(['url','title','imageurl','category','newname','time'])
-
-    visited_urls=[]
 
     for site_url in site_urls:
         source = requests.get(site_url).text
@@ -75,7 +73,7 @@ def getAllUrlsLaoDong():
 
     csv_file.close()
 
-getAllUrlsLaoDong() 
+#getAllUrlsLaoDong() 
 #time_str='Thứ sáu, 01/04/2022 15:02 (GMT+7)'
 #time_str_nor=normalizeDatetime('Thứ sáu, 01/04/2022 15:02 (GMT+7)')
 #print(time_str_nor)
