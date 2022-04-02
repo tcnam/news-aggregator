@@ -1,4 +1,3 @@
-
 import pymongo
 import pandas as pd
 import csv
@@ -30,7 +29,9 @@ def getVisitedUrl():
         time=news_df.iloc[i,5]
         csv_writer.writerow([url,title,image_url,category,new_name,time])  
     csv_file.close()
+    print(type(news_df.iloc[1]))
     return visited_urls
+    
 
 visited_urls=getVisitedUrl()
 getAllUrlsLaoDong(visited_urls)
